@@ -1,0 +1,3 @@
+timeAdded:2
+targetsOnScreen:1
+upperLimit:25
