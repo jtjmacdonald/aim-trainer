@@ -71,38 +71,44 @@ class Difficulty():
 
 
 def LoadMainMenu():
+    while True:                                     
+        for event in pygame.event.get():            #
+            if event.type == pygame.QUIT:           #   Ensures that when the user wishes to close the program, python unloads itself properly.
+                pygame.quit()                       #
+                quit()                              #
 
-    windowSurface.fill(BLACK)
-    menuButtons = []
-    menuButtons.append(pygame.Rect(266, 100, 266, 120))
-    menuButtons.append(pygame.Rect(266, 266, 266, 120))
-    menuButtons.append(pygame.Rect(266, 432, 266, 120))
+        windowSurface.fill(BLACK)
+        menuButtons = []
+        menuButtons.append(pygame.Rect(266, 100, 266, 120))
+        menuButtons.append(pygame.Rect(266, 266, 266, 120))
+        menuButtons.append(pygame.Rect(266, 432, 266, 120))
         
-    for rect in menuButtons:                            # this prints the rectangles which the user controls the game via
-        pygame.draw.rect(windowSurface, RED, rect)
+        for rect in menuButtons:                            # this prints the rectangles which the user controls the game via
+            pygame.draw.rect(windowSurface, RED, rect)
 
-    if event.type == MOUSEBUTTONDOWN:
-        # Start Game
-        if menuButtons[0].collidepoint(pygame.mouse.get_pos()):  
-            startGame(cx, cy, width_of_circle, gameDiff.upperLimit, hits, inserted)
-        # Select Difficulty
-        if menuButtons[1].collidepoint(pygame.mouse.get_pos()):
-            # loadDifficultyMenu(menuButtons)
-            pass
-        # Leaderboard
-        if menuButtons[2].collidepoint(pygame.mouse.get_pos()):
-            loadLeaderboard()
+        if event.type == MOUSEBUTTONDOWN:
+            # Start Game
+            if menuButtons[0].collidepoint(pygame.mouse.get_pos()):  
+                startGame(cx, cy, width_of_circle, gameDiff.upperLimit, hits, inserted)
+            # Select Difficulty
+            if menuButtons[1].collidepoint(pygame.mouse.get_pos()):
+                # loadDifficultyMenu(menuButtons)
+                pass
+            # Leaderboard
+            if menuButtons[2].collidepoint(pygame.mouse.get_pos()):
+                loadLeaderboard()
     
-    windowSurface.blit(titlefont.render('AIM TRAINER', True, WHITE, None), (170,15))
-    windowSurface.blit(buttonfont.render('Start Game', True, BLACK, None), (310,140))
-    windowSurface.blit(buttonfont.render('Select Difficulty', True, BLACK, None), (290,306))
-    windowSurface.blit(buttonfont.render('Leaderboard', True, BLACK, None), (310,472))
+        windowSurface.blit(titlefont.render('AIM TRAINER', True, WHITE, None), (170,15))
+        windowSurface.blit(buttonfont.render('Start Game', True, BLACK, None), (310,140))
+        windowSurface.blit(buttonfont.render('Select Difficulty', True, BLACK, None), (290,306))
+        windowSurface.blit(buttonfont.render('Leaderboard', True, BLACK, None), (310,472))
 
         
-    pygame.display.update()
-    clock.tick(60)
+        pygame.display.update()
+        clock.tick(60)
     
 def loadDifficultyMenu(menuButtons):
+    print("Loading Difficulty Menu")
     while True:
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:           
@@ -136,6 +142,7 @@ def loadDifficultyMenu(menuButtons):
         clock.tick(60)
 
 def loadLeaderboard():
+    print("Loading Leaderboard")
     while True:
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:           
@@ -305,15 +312,10 @@ gameDiff.ReadDifficulty("easy")
 
 print(gameDiff.timeAdded, gameDiff.targetsOnScreen, gameDiff.upperLimit)
 
-# Main Game Loop
+# Calling all game functions here
 
 
-while True:                                     
-    for event in pygame.event.get():            #
-        if event.type == pygame.QUIT:           #   Ensures that when the user wishes to close the program, python unloads itself properly.
-            pygame.quit()                       #
-            quit()                              #
-    LoadMainMenu()
+LoadMainMenu()
 
 
 
