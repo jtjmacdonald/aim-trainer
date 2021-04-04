@@ -34,13 +34,9 @@ WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
 
-# This class will be used to define the difficulty parameters.
-# Current plan: Read in difficulty parameters from a file.
-
 class Difficulty():
-    def __init__(self, timeAdded, targetsOnScreen, upperLimit):
-        self.timeAdded = timeAdded
-        self.targetsOnScreen = targetsOnScreen
+    def __init__(self, lowerLimit, upperLimit):
+        self.lowerLimit = lowerLimit
         self.upperLimit = upperLimit
 
 
@@ -61,10 +57,8 @@ class Difficulty():
             splitLine[1] = splitLine[1].strip("\n")
             print(splitLine[0], splitLine[1])
             if var == 1:
-                self.timeAdded = splitLine[1]
+                self.lowerLimit = splitLine[1]
             elif var == 2:
-                self.targetsOnScreen = splitLine[1]
-            elif var == 3:
                 self.upperLimit = splitLine[1]
             var = var + 1
         
@@ -94,7 +88,7 @@ def LoadMainMenu():
                 startGame(cx, cy, width_of_circle, gameDiff.upperLimit, hits, inserted)
             # Select Difficulty
             if menuButtons[1].collidepoint(pygame.mouse.get_pos()):
-                # loadDifficultyMenu(menuButtons)
+                loadDifficultyMenu(menuButtons)
                 pass
             # Leaderboard
             if menuButtons[2].collidepoint(pygame.mouse.get_pos()):
@@ -133,11 +127,11 @@ def loadDifficultyMenu(menuButtons):
         windowSurface.blit(buttonfont.render('Back', True, WHITE, None), (110,472))
         
         if diffButtons[0].collidepoint(pygame.mouse.get_pos()):
-            gameDiff = Difficulty.ReadDifficulty(Difficulty, "easy")
+            gameDiff.ReadDifficulty("easy")
         if diffButtons[1].collidepoint(pygame.mouse.get_pos()):
-            gameDiff = Difficulty.ReadDifficulty(Difficulty, "medium")
+            gameDiff.ReadDifficulty("medium")
         if diffButtons[2].collidepoint(pygame.mouse.get_pos()):
-            gameDiff = Difficulty.ReadDifficulty(Difficulty, "hard")
+            gameDiff.ReadDifficulty("hard")
         if diffButtons[3].collidepoint(pygame.mouse.get_pos()):
             LoadMainMenu()
         pygame.display.update()
@@ -308,11 +302,8 @@ def scoresTableToArray():
 titlefont = pygame.font.SysFont('Arial', 70)    # note that sysfont changes based on operating system
 scoreFont = pygame.font.SysFont('Arial', 40)
 buttonfont = pygame.font.SysFont('Arial', 32)
-gameDiff = Difficulty(2, 1, 20)
-gameDiff.ReadDifficulty("easy")
-
-
-print(gameDiff.timeAdded, gameDiff.targetsOnScreen, gameDiff.upperLimit)
+gameDiff = Difficulty(16, 20)
+gameDiff.ReadDifficulty("hard")
 
 # Calling all game functions here
 
