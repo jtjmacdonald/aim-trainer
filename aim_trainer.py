@@ -45,6 +45,8 @@ class Difficulty():
 
 
     def ReadDifficulty(self, difficulty):
+
+        self.difficulty = difficulty
         
         if difficulty == "easy":
             difficultyFile = open("easy.txt", "r")
@@ -226,7 +228,7 @@ def endGame(gameTime, inserted):                                    # function c
 
         windowSurface.blit(buttonfont.render("Game Complete", True, WHITE, None), (310,50))
         windowSurface.blit(buttonfont.render("Time Completed: " + str(gameTime), True, WHITE, None), (310,140))
-        windowSurface.blit(buttonfont.render("Difficulty: ", True, WHITE, None), (310,230))
+        windowSurface.blit(buttonfont.render("Difficulty: " +gameDiff.difficulty, True, WHITE, None), (310,230))
 
         if inserted == False:                       # checks if the data is already in the database
             initDatabaseConnection(gameTime)
