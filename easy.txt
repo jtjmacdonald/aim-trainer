@@ -1,3 +1,2 @@
-timeAdded:2
-targetsOnScreen:1
+lowerLimit:20
 upperLimit:25
