@@ -69,10 +69,20 @@ class Difficulty():
 
 def LoadMainMenu():
     while True:                                     
-        for event in pygame.event.get():            #
+        for event in pygame.event.get():            #   All events go here. This include user clicking.
             if event.type == pygame.QUIT:           #   Ensures that when the user wishes to close the program, python unloads itself properly.
                 pygame.quit()                       #
                 quit()                              #
+            if event.type == MOUSEBUTTONDOWN:
+            # Start Game
+                if menuButtons[0].collidepoint(pygame.mouse.get_pos()):  
+                    startGame(cx, cy, width_of_circle, gameDiff.upperLimit, hits, inserted)
+            # Select Difficulty
+                if menuButtons[1].collidepoint(pygame.mouse.get_pos()):
+                    loadDifficultyMenu(menuButtons)
+            # Leaderboard
+                if menuButtons[2].collidepoint(pygame.mouse.get_pos()):
+                    loadLeaderboard()
 
         windowSurface.fill(BLACK)
         menuButtons = []
@@ -83,17 +93,7 @@ def LoadMainMenu():
         for rect in menuButtons:                            # this prints the rectangles which the user controls the game through
             pygame.draw.rect(windowSurface, RED, rect)
 
-        if event.type == MOUSEBUTTONDOWN:
-            # Start Game
-            if menuButtons[0].collidepoint(pygame.mouse.get_pos()):  
-                startGame(cx, cy, width_of_circle, gameDiff.upperLimit, hits, inserted)
-            # Select Difficulty
-            if menuButtons[1].collidepoint(pygame.mouse.get_pos()):
-                loadDifficultyMenu(menuButtons)
-                pass
-            # Leaderboard
-            if menuButtons[2].collidepoint(pygame.mouse.get_pos()):
-                loadLeaderboard()
+        
     
         windowSurface.blit(titlefont.render('AIM TRAINER', True, WHITE, None), (170,15))
         windowSurface.blit(buttonfont.render('Start Game', True, BLACK, None), (310,140))
@@ -111,6 +111,15 @@ def loadDifficultyMenu(menuButtons):
             if event.type == pygame.QUIT:           
                 pygame.quit()                       
                 quit()
+            if event.type == MOUSEBUTTONDOWN:
+                if diffButtons[0].collidepoint(pygame.mouse.get_pos()):
+                    gameDiff.ReadDifficulty("easy")
+                if diffButtons[1].collidepoint(pygame.mouse.get_pos()):
+                    gameDiff.ReadDifficulty("medium")
+                if diffButtons[2].collidepoint(pygame.mouse.get_pos()):
+                    gameDiff.ReadDifficulty("hard")
+                if diffButtons[3].collidepoint(pygame.mouse.get_pos()):
+                    LoadMainMenu()
         
         windowSurface.fill(BLACK)
         time.sleep(0.5) # attempting to delay the program so that infinite recursion doesn't occur with buttons that refer to themselves
@@ -131,14 +140,7 @@ def loadDifficultyMenu(menuButtons):
         windowSurface.blit(buttonfont.render('Hard', True, WHITE, None), (310,472))
         windowSurface.blit(buttonfont.render('Back', True, WHITE, None), (110,472))
         
-        if diffButtons[0].collidepoint(pygame.mouse.get_pos()):
-            gameDiff.ReadDifficulty("easy")
-        if diffButtons[1].collidepoint(pygame.mouse.get_pos()):
-            gameDiff.ReadDifficulty("medium")
-        if diffButtons[2].collidepoint(pygame.mouse.get_pos()):
-            gameDiff.ReadDifficulty("hard")
-        if diffButtons[3].collidepoint(pygame.mouse.get_pos()):
-            LoadMainMenu()
+        
         pygame.display.update()
         clock.tick(60)
 
@@ -149,6 +151,9 @@ def loadLeaderboard():
             if event.type == pygame.QUIT:           
                 pygame.quit()                       
                 quit()
+            if event.type == MOUSEBUTTONDOWN:
+                if LBButtons[0].collidepoint(pygame.mouse.get_pos()):
+                    LoadMainMenu()
         scoreData = []
         scoreData = scoresTableToArray()
         sortedScoreData = bubbleSortArray(scoreData)
@@ -173,8 +178,6 @@ def loadLeaderboard():
         windowSurface.blit(titlefont.render('Leaderboard', True, YELLOW, None), (210,15))
         windowSurface.blit(buttonfont.render('Back', True, WHITE, None), (125,472))
         
-        if LBButtons[0].collidepoint(pygame.mouse.get_pos()):
-            LoadMainMenu()
             
         pygame.display.update()
         clock.tick(60)
