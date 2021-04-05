@@ -66,6 +66,7 @@ class Difficulty():
             
 
 
+
 def LoadMainMenu():
     while True:                                     
         for event in pygame.event.get():            #
@@ -79,7 +80,7 @@ def LoadMainMenu():
         menuButtons.append(pygame.Rect(266, 266, 266, 120))
         menuButtons.append(pygame.Rect(266, 432, 266, 120))
         
-        for rect in menuButtons:                            # this prints the rectangles which the user controls the game via
+        for rect in menuButtons:                            # this prints the rectangles which the user controls the game through
             pygame.draw.rect(windowSurface, RED, rect)
 
         if event.type == MOUSEBUTTONDOWN:
@@ -118,12 +119,16 @@ def loadDifficultyMenu(menuButtons):
         diffButtons.append(pygame.Rect(266, 100, 266, 120))
         diffButtons.append(pygame.Rect(266, 266, 266, 120))
         diffButtons.append(pygame.Rect(266, 432, 266, 120))     
-        diffButtons.append(pygame.Rect(80, 432, 266, 120)) # back button   
+        diffButtons.append(pygame.Rect(30, 432, 220, 120)) # back button
+
+        for rect in diffButtons:
+            
+            pygame.draw.rect(windowSurface, RED, rect)
         
-        windowSurface.blit(titlefont.render('DIFFICULTY SELECT', True, YELLOW, None), (170,15))
-        windowSurface.blit(buttonfont.render('Easy', True, BLACK, None), (310,140))
-        windowSurface.blit(buttonfont.render('Medium', True, BLACK, None), (290,306))
-        windowSurface.blit(buttonfont.render('Hard', True, BLACK, None), (310,472))
+        windowSurface.blit(titlefont.render('DIFFICULTY SELECT', True, YELLOW, None), (80,15))
+        windowSurface.blit(buttonfont.render('Easy', True, WHITE, None), (310,140))
+        windowSurface.blit(buttonfont.render('Medium', True, WHITE, None), (290,306))
+        windowSurface.blit(buttonfont.render('Hard', True, WHITE, None), (310,472))
         windowSurface.blit(buttonfont.render('Back', True, WHITE, None), (110,472))
         
         if diffButtons[0].collidepoint(pygame.mouse.get_pos()):
@@ -276,25 +281,10 @@ def scoresTableToArray():
     allScores = cur.fetchall() # retrieves a tuple of scores from the database
     scoreArray = numpy.asarray(allScores) # converts the tuple to a 2d array
     scoreData = scoreArray.flatten() # converts the 2d array to a 1d array
-
+    
     con.close()
     return scoreData
 
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-            
-    
     
 
 # defining global variables/function variables/default variables
@@ -302,8 +292,8 @@ def scoresTableToArray():
 titlefont = pygame.font.SysFont('Arial', 70)    # note that sysfont changes based on operating system
 scoreFont = pygame.font.SysFont('Arial', 40)
 buttonfont = pygame.font.SysFont('Arial', 32)
-gameDiff = Difficulty(16, 20)
-gameDiff.ReadDifficulty("hard")
+gameDiff = Difficulty(16, 20)                   # this line is just creation of the object -- next line actually gives it correct values
+gameDiff.ReadDifficulty("medium")
 
 # Calling all game functions here
 
