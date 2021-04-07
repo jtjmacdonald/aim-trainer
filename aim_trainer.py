@@ -122,7 +122,7 @@ def loadDifficultyMenu(menuButtons):
                     LoadMainMenu()
         
         windowSurface.fill(BLACK)
-        time.sleep(0.5) # attempting to delay the program so that infinite recursion doesn't occur with buttons that refer to themselves
+
                 
         diffButtons = []
         diffButtons.append(pygame.Rect(266, 100, 266, 120))
@@ -224,6 +224,13 @@ def startGame(cx, cy, width_of_circle, gameDiff, hits, inserted):
         
 def endGame(gameTime, inserted):                                    # function called when game ends; displays score (time), saves to database
     while True:
+        for event in pygame.event.get():            
+            if event.type == pygame.QUIT:           
+                pygame.quit()                       
+                quit()
+            if event.type == MOUSEBUTTONDOWN:
+                if endButtons[0].collidepoint(pygame.mouse.get_pos()):
+                    LoadMainMenu()
         
         windowSurface.fill(BLACK)
         time.sleep(0.5)
@@ -231,6 +238,18 @@ def endGame(gameTime, inserted):                                    # function c
         windowSurface.blit(buttonfont.render("Game Complete", True, WHITE, None), (310,50))
         windowSurface.blit(buttonfont.render("Time Completed: " + str(gameTime), True, WHITE, None), (310,140))
         windowSurface.blit(buttonfont.render("Difficulty: " +gameDiff.difficulty, True, WHITE, None), (310,230))
+
+
+        # Declaring buttons
+        endButtons = []
+        endButtons.append(pygame.Rect(30, 432, 220, 120)) # back button
+
+        # Showing buttons
+        for rect in endButtons:
+            pygame.draw.rect(windowSurface, RED, rect)
+
+        # Text for the just blitted button
+        windowSurface.blit(buttonfont.render('Back', True, WHITE, None), (110,472))
 
         if inserted == False:                       # checks if the data is already in the database
             initDatabaseConnection(gameTime)
