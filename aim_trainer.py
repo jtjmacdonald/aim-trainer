@@ -13,7 +13,6 @@ pygame.display.set_caption("Aim Trainer")                   # setting the window
 # game start variables
 cx = random.randint(20, width - 20)         # max width of a circle is 20; no matter what the res, there will not be targets outside the
 cy = random.randint(20, height - 20)        # window the player can see
-width_of_circle = random.randint(14, 20)    # where the width of circles is set (from 14 to 20)
 hits = 0
 #scoreData = [random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, ] # this is sample data for the bubble sort, as a placeholder for actual data to be taken in from a database
 # the comment for the above is off screen ---------->
@@ -22,6 +21,14 @@ sortedScoreData = []
 inserted = False
 
 #defining shape dimensions
+#scoreData = [random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, random.randint(100, 999)/100.00, ] # this is sample data for the bubble sort, as a placeholder for actual data to be taken in from a database
+# the comment for the above is off screen ---------->
+sortedScoreData = []
+# this variable is checked when data is placed into the database, to ensure repeat entries do not occur
+inserted = False
+
+#defining shape dimensions
+rect1 = (266, 266, 266, 120)
 rect1 = (266, 266, 266, 120)
 rect2 = (266, 100, 266, 120)
 rect3 = (266, 432, 266, 120)
@@ -76,7 +83,7 @@ def LoadMainMenu():
             if event.type == MOUSEBUTTONDOWN:
             # Start Game
                 if menuButtons[0].collidepoint(pygame.mouse.get_pos()):  
-                    startGame(cx, cy, width_of_circle, gameDiff.upperLimit, hits, inserted)
+                    startGame(cx, cy, width_of_circle, gameDiff, hits, inserted)
             # Select Difficulty
                 if menuButtons[1].collidepoint(pygame.mouse.get_pos()):
                     loadDifficultyMenu(menuButtons)
@@ -184,7 +191,9 @@ def loadLeaderboard():
     
     
 
-def startGame(cx, cy, width_of_circle, gameDiff, hits, inserted):
+def startGame(cx, cy, width_of_circle, Difficulty, hits, inserted):
+    
+    
     startTime = time.time()
 
     inserted = False
@@ -208,7 +217,7 @@ def startGame(cx, cy, width_of_circle, gameDiff, hits, inserted):
             windowSurface.fill(BLACK)
             cx = random.randint(20, width - 20)
             cy = random.randint(20, height - 20)
-            width_of_circle = random.randint(14, 20)
+            width_of_circle = random.randint(int(gameDiff.lowerLimit), int(gameDiff.upperLimit))
             hits = hits + 1
 
     
@@ -316,6 +325,7 @@ scoreFont = pygame.font.SysFont('Arial', 40)
 buttonfont = pygame.font.SysFont('Arial', 32)
 gameDiff = Difficulty(16, 20)                   # this line is just creation of the object -- next line actually gives it correct values
 gameDiff.ReadDifficulty("medium")
+width_of_circle = random.randint(int(gameDiff.lowerLimit), int(gameDiff.upperLimit))    # where the width of circles is set (from 14 to 20)
 
 # Calling all game functions here
 
