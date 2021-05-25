@@ -161,10 +161,7 @@ def loadLeaderboard():
             if event.type == MOUSEBUTTONDOWN:
                 if LBButtons[0].collidepoint(pygame.mouse.get_pos()):
                     LoadMainMenu()
-        scoreData = []
-        scoreData = scoresTableToArray()
-        sortedScoreData = bubbleSortArray(scoreData)
-
+        
 
         windowSurface.fill(BLACK)
                 
@@ -177,14 +174,23 @@ def loadLeaderboard():
             
         printHeight = 100
         
-        for i in range(len(sortedScoreData)):
-            windowSurface.blit(scoreFont.render(str(i + 1) + ". " + str(sortedScoreData[i]), True, WHITE, None), (335, printHeight))
-            printHeight = printHeight + 35
+
             
             
         windowSurface.blit(titlefont.render('Leaderboard', True, YELLOW, None), (210,15))
         windowSurface.blit(buttonfont.render('Back', True, WHITE, None), (125,472))
         
+        scoreData = []
+
+        scoreData = scoresTableToArray()
+        if scoreData != False:
+            sortedScoreData = bubbleSortArray(scoreData)
+            
+            for i in range(len(sortedScoreData)):
+                windowSurface.blit(scoreFont.render(str(i + 1) + ". " + str(sortedScoreData[i]), True, WHITE, None), (335, printHeight))
+                printHeight = printHeight + 35
+        else:
+            windowSurface.blit(buttonfont.render('Failed to retrieve data. Try playing a game first!', True, WHITE, None), (100, 200))
             
         pygame.display.update()
         clock.tick(60)
@@ -293,12 +299,16 @@ def initDatabaseConnection(gameTime):
     cur.execute(" INSERT INTO scores values (?)", (gameTime,))
 
     print("database insertion complete!")
+    #Print database insertion completion on screen for 5 seconds
 
     # Commit the new entry (save to disk)
     con.commit()
 
     # Close the connection
     con.close()
+
+    status = True
+    return status
 
 def scoresTableToArray():
     con = sqlite3.connect('scores.sqlite')
@@ -314,6 +324,9 @@ def scoresTableToArray():
     scoreData = scoreArray.flatten() # converts the 2d array to a 1d array
     
     con.close()
+    if scoreData.size == 0:
+        status = False
+        return status
     return scoreData
 
     
